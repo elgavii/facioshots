@@ -4,8 +4,6 @@ import { createJob } from '@/lib/db'
 import { sendOrderConfirmation } from '@/lib/email'
 import Stripe from 'stripe'
 
-export const config = { api: { bodyParser: false } }
-
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')!
