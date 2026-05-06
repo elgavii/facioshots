@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState, useCallback } from 'react'
-import { useParams } from 'next/navigation'
 
 interface JobStatus {
   id: string
@@ -18,8 +17,8 @@ const STATUS = {
   failed: { text: 'Something went wrong. Please contact support.', pct: 0 },
 }
 
-export default function ResultsPage() {
-  const { id } = useParams<{ id: string }>()
+export default function ResultsPage({ params }: { params: { id: string } }) {
+  const { id } = params
   const [job, setJob] = useState<JobStatus | null>(null)
   const [error, setError] = useState('')
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
@@ -58,7 +57,7 @@ export default function ResultsPage() {
     <main style={{ fontFamily: "'DM Sans',sans-serif", minHeight: '100vh', background: '#FAF8F4', color: '#1A1814' }}>
       <nav style={{ borderBottom: '1px solid rgba(26,24,20,0.1)', padding: '1.25rem 3rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <a href="/" style={{ fontFamily: 'Cormorant Garamond,Georgia,serif', fontSize: '1.5rem', fontWeight: 300, letterSpacing: '0.15em', textDecoration: 'none', color: '#1A1814' }}>
-          LUM<span style={{ color: '#C9A84C' }}>I</span>O
+          Facio<span style={{ color: '#C9A84C' }}>shots</span>
         </a>
         <span style={{ fontSize: '0.78rem', color: '#8A8278', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Order #{String(id).slice(0, 12)}…</span>
       </nav>
