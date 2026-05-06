@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.CheckoutSession
-    const meta = session.metadata!
+const session = event.data.object as Stripe.Checkout.Session
+  const meta = session.metadata!
 
     const job = {
       id: session.id,
