@@ -4,6 +4,7 @@ import { generateHeadshots } from '@/lib/astria'
 import { PLANS, PlanKey } from '@/lib/stripe'
 
 // Astria POSTs here when fine-tune training completes.
+// Kicks off the first batch of 8 images; prompt-done chains subsequent batches.
 export async function POST(req: NextRequest) {
   const jobId = req.nextUrl.searchParams.get('jobId')
   if (!jobId) return NextResponse.json({ error: 'Missing jobId' }, { status: 400 })
@@ -22,16 +23,23 @@ export async function POST(req: NextRequest) {
     await updateJob(jobId, { status: 'generating' })
 
     const plan = PLANS[job.plan as PlanKey]
-    const count = plan?.headshots ?? 40
+    const total = plan?.headshots ?? 40
+    const firstBatch = Math.min(8, total)
+    const remaining = total - firstBatch
 
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
-    const callbackUrl = `${BASE_URL}/api/astria/prompt-done?jobId=${encodeURIComponent(jobId)}`
+    const callbackUrl =
+      `${BASE_URL}/api/astria/prompt-done` +
+      `?jobId=${encodeURIComponent(jobId)}` +
+      `&remaining=${remaining}` +
+      `&target=${total}`
 
     const { promptId } = await generateHeadshots(
       tuneId,
       job.style,
       job.background,
-      count,
+      job.gender,
+      firstBatch,
       callbackUrl
     )
     await updateJob(jobId, { promptId })

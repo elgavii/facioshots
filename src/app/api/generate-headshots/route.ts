@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
     const { tuneId } = await createFineTune(
       job.imageUrls,
       `facioshots-${jobId.slice(0, 8)}`,
+      job.gender,
       callbackUrl
     )
     await updateJob(jobId, { tuneId })

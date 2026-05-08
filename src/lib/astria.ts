@@ -1,8 +1,3 @@
-/**
- * Astria AI integration
- * Docs: https://docs.astria.ai
- */
-
 const ASTRIA_API_KEY = process.env.ASTRIA_API_KEY!
 const ASTRIA_BASE = 'https://api.astria.ai'
 
@@ -14,21 +9,20 @@ export interface AstriaJob {
   error?: string
 }
 
-// Step 1: Create a fine-tune (trains the model on uploaded photos)
 export async function createFineTune(
   imageUrls: string[],
   name: string,
+  gender: string,
   callbackUrl?: string
 ): Promise<{ tuneId: number }> {
+  const tuneGender = gender === 'woman' ? 'woman' : 'man'
+
   const formData = new FormData()
   formData.append('tune[title]', name)
-  formData.append('tune[name]', 'man')
+  formData.append('tune[name]', tuneGender)
   formData.append('tune[base_tune_id]', '690204') // Realistic Vision v5.1
   if (callbackUrl) formData.append('tune[callback]', callbackUrl)
-
-  imageUrls.forEach((url) => {
-    formData.append('tune[image_urls][]', url)
-  })
+  imageUrls.forEach((url) => formData.append('tune[image_urls][]', url))
 
   const res = await fetch(`${ASTRIA_BASE}/tunes`, {
     method: 'POST',
@@ -45,14 +39,18 @@ export async function createFineTune(
   return { tuneId: data.id }
 }
 
-// Step 2: Queue prompts to generate headshot variations
+// Astria limits num_images to 8 per prompt. For larger counts, callers must
+// chain multiple prompts using the sequential callback pattern in prompt-done.
 export async function generateHeadshots(
   tuneId: number,
   style: string,
   background: string,
-  count: number = 40,
+  gender: string,
+  count: number = 8,
   callbackUrl?: string
 ): Promise<{ promptId: number }> {
+  const triggerWord = gender === 'woman' ? 'sks woman' : 'sks man'
+
   const stylePrompts: Record<string, string> = {
     corporate:
       'professional headshot, business attire, crisp white shirt, navy blazer, neutral background, studio lighting, sharp focus, LinkedIn photo, 8k',
@@ -73,14 +71,18 @@ export async function generateHeadshots(
     black: 'dark black background',
   }
 
-  const prompt = `${stylePrompts[style] || stylePrompts.corporate}, ${bgMap[background] || bgMap.white}, (ohwx person)`
+  const styleText = stylePrompts[style] ?? stylePrompts.corporate
+  const bgText = bgMap[background] ?? bgMap.white
+  const promptText = `${triggerWord}, ${styleText}, ${bgText}`
   const negativePrompt =
     'cartoon, anime, illustration, painting, ugly, deformed, blurry, low quality, watermark, text'
 
+  const batchSize = Math.min(count, 8)
+
   const promptBody: Record<string, unknown> = {
-    text: prompt,
+    text: promptText,
     negative_prompt: negativePrompt,
-    num_images: count,
+    num_images: batchSize,
     w: 512,
     h: 768,
     cfg_scale: 7,
@@ -107,25 +109,6 @@ export async function generateHeadshots(
   return { promptId: data.id }
 }
 
-// Step 3: Poll for completion
-export async function getPromptStatus(
-  tuneId: number,
-  promptId: number
-): Promise<{ status: string; images: string[] }> {
-  const res = await fetch(`${ASTRIA_BASE}/tunes/${tuneId}/prompts/${promptId}`, {
-    headers: { Authorization: `Bearer ${ASTRIA_API_KEY}` },
-  })
-
-  if (!res.ok) throw new Error(`Astria status check failed`)
-
-  const data = await res.json()
-  return {
-    status: data.trained_at ? 'completed' : 'pending',
-    images: data.images?.map((img: { url: string }) => img.url) || [],
-  }
-}
-
-// Check fine-tune training status
 export async function getFineTuneStatus(tuneId: number): Promise<{ trained: boolean }> {
   const res = await fetch(`${ASTRIA_BASE}/tunes/${tuneId}`, {
     headers: { Authorization: `Bearer ${ASTRIA_API_KEY}` },
@@ -133,4 +116,19 @@ export async function getFineTuneStatus(tuneId: number): Promise<{ trained: bool
   if (!res.ok) throw new Error('Failed to get tune status')
   const data = await res.json()
   return { trained: !!data.trained_at }
+}
+
+export async function getPromptStatus(
+  tuneId: number,
+  promptId: number
+): Promise<{ status: string; images: string[] }> {
+  const res = await fetch(`${ASTRIA_BASE}/tunes/${tuneId}/prompts/${promptId}`, {
+    headers: { Authorization: `Bearer ${ASTRIA_API_KEY}` },
+  })
+  if (!res.ok) throw new Error('Astria status check failed')
+  const data = await res.json()
+  return {
+    status: data.trained_at ? 'completed' : 'pending',
+    images: data.images?.map((img: { url: string }) => img.url) ?? [],
+  }
 }
