@@ -33,11 +33,18 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     }
 
-    // Save job to DB
-    await createJob(job)
+    // Save job to DB — if this throws, return 500 so Stripe retries the webhook
+    try {
+      await createJob(job)
+    } catch (err) {
+      console.error('[webhook] Redis createJob failed:', err)
+      return NextResponse.json({ error: 'DB write failed' }, { status: 500 })
+    }
 
-    // Send confirmation email
-    await sendOrderConfirmation(job.email, session.id, meta.plan)
+    // Send confirmation email — non-critical, don't fail the webhook if it errors
+    sendOrderConfirmation(job.email, session.id, meta.plan).catch((err) =>
+      console.error('[webhook] Order confirmation email failed:', err)
+    )
 
     // Kick off AI generation (async — don't await)
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'

@@ -1,9 +1,8 @@
 import { Redis } from '@upstash/redis'
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-})
+// fromEnv() reads UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN and throws
+// at construction time (not silently at first use) when vars are missing.
+const redis = Redis.fromEnv()
 
 export interface Job {
   id: string
