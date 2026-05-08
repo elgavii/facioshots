@@ -53,13 +53,13 @@ export async function generateHeadshots(
 
   const stylePrompts: Record<string, string> = {
     corporate:
-      'professional headshot, business attire, crisp white shirt, navy blazer, neutral background, studio lighting, sharp focus, LinkedIn photo, 8k',
+      'professional LinkedIn headshot, business attire, studio lighting, sharp focus',
     creative:
-      'professional headshot, smart casual, warm studio lighting, soft bokeh background, approachable smile, modern creative professional, 8k',
+      'professional headshot, smart casual, warm studio lighting, soft bokeh background',
     executive:
-      'executive portrait, formal business attire, authoritative, directional studio lighting, dark background, sharp focus, Fortune 500 CEO style, 8k',
+      'executive portrait, formal business attire, directional studio lighting, sharp focus',
     casual:
-      'professional headshot, smart casual, relaxed confident pose, natural lighting, startup founder style, approachable, 8k',
+      'professional headshot, smart casual, natural lighting, approachable expression',
   }
 
   const bgMap: Record<string, string> = {
@@ -73,9 +73,10 @@ export async function generateHeadshots(
 
   const styleText = stylePrompts[style] ?? stylePrompts.corporate
   const bgText = bgMap[background] ?? bgMap.white
-  const promptText = `${triggerWord}, ${styleText}, ${bgText}`
+  // Trigger word first with emphasis, then style — keeps face identity dominant
+  const promptText = `(${triggerWord}:1.4), ${styleText}, ${bgText}, photorealistic, highly detailed face`
   const negativePrompt =
-    'cartoon, anime, illustration, painting, ugly, deformed, blurry, low quality, watermark, text'
+    'cartoon, anime, illustration, painting, ugly, deformed, blurry, low quality, watermark, text, different person, changed face, distorted face, bad face, extra people'
 
   const batchSize = Math.min(count, 8)
 
@@ -85,8 +86,8 @@ export async function generateHeadshots(
     num_images: batchSize,
     w: 512,
     h: 768,
-    cfg_scale: 7,
-    steps: 30,
+    cfg_scale: 9,
+    steps: 35,
     seed: -1,
   }
   if (callbackUrl) promptBody.callback = callbackUrl
