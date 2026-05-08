@@ -15,9 +15,24 @@ export async function POST(req: NextRequest) {
   if (!jobId) return NextResponse.json({ error: 'Missing jobId' }, { status: 400 })
 
   const body = await req.json()
-  const newImages: string[] = body.prompt?.images?.map((img: { url: string }) => img.url) ?? []
+  console.log('[prompt-done] raw body:', JSON.stringify(body).slice(0, 500))
+
+  const rawImages: unknown[] = body.prompt?.images ?? []
+  const newImages: string[] = rawImages
+    .map((img: unknown) => {
+      if (typeof img === 'string') return img
+      if (img && typeof img === 'object') {
+        const o = img as Record<string, unknown>
+        return (o.url ?? o.src ?? o.download_url ?? o.path ?? null) as string | null
+      }
+      return null
+    })
+    .filter((u): u is string => typeof u === 'string' && u.startsWith('http'))
+
+  console.log('[prompt-done] extracted', newImages.length, 'URLs, first:', newImages[0])
+
   if (!newImages.length) {
-    console.error('[prompt-done] No images in callback body:', body)
+    console.error('[prompt-done] Could not extract image URLs from body:', JSON.stringify(body))
     return NextResponse.json({ error: 'No images in payload' }, { status: 400 })
   }
 
