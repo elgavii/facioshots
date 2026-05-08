@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
     const firstBatch = Math.min(8, total)
     const remaining = total - firstBatch
 
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
     const callbackUrl =
       `${BASE_URL}/api/astria/prompt-done` +
       `?jobId=${encodeURIComponent(jobId)}` +

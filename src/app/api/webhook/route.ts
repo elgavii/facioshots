@@ -53,7 +53,8 @@ export async function POST(req: NextRequest) {
     )
 
     // Kick off AI generation (async — don't await)
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
     fetch(`${BASE_URL}/api/generate-headshots`, {
       method: 'POST',
       headers: {

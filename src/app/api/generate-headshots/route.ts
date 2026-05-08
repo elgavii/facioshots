@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
   try {
     await updateJob(jobId, { status: 'training' })
 
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
     const callbackUrl = `${BASE_URL}/api/astria/tune-done?jobId=${encodeURIComponent(jobId)}`
 
     const { tuneId } = await createFineTune(
