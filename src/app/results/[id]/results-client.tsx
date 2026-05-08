@@ -17,8 +17,7 @@ const STATUS = {
   failed: { text: 'Something went wrong. Please contact support.', pct: 0 },
 }
 
-export default function ResultsPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default function ResultsClient({ id }: { id: string }) {
   const [job, setJob] = useState<JobStatus | null>(null)
   const [error, setError] = useState('')
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
