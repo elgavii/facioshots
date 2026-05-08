@@ -1,62 +1,37 @@
-/**
- * Lightweight file-based job store.
- * In production, swap this for Vercel KV, Upstash Redis, or Planetscale.
- * 
- * To use Vercel KV instead:
- *   npm install @vercel/kv
- *   Replace all functions below with @vercel/kv calls (same interface).
- */
+import { Redis } from '@upstash/redis'
 
-import { promises as fs } from 'fs'
-import path from 'path'
-import os from 'os'
-
-const DB_PATH = path.join(os.tmpdir(), 'facioshots-jobs.json')
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+})
 
 export interface Job {
-  id: string                // Stripe session ID (serves as order ID)
+  id: string
   email: string
   plan: string
   style: string
   background: string
   gender: string
-  imageUrls: string[]       // uploaded photo URLs
-  tuneId?: number           // Astria fine-tune ID
-  promptId?: number         // Astria prompt ID
+  imageUrls: string[]
+  tuneId?: number
+  promptId?: number
   status: 'paid' | 'training' | 'generating' | 'done' | 'failed'
-  resultImages?: string[]   // final headshot URLs
+  resultImages?: string[]
   createdAt: string
   updatedAt: string
   error?: string
 }
 
-async function readDB(): Promise<Record<string, Job>> {
-  try {
-    const raw = await fs.readFile(DB_PATH, 'utf-8')
-    return JSON.parse(raw)
-  } catch {
-    return {}
-  }
-}
-
-async function writeDB(data: Record<string, Job>): Promise<void> {
-  await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2))
-}
-
 export async function createJob(job: Job): Promise<void> {
-  const db = await readDB()
-  db[job.id] = job
-  await writeDB(db)
+  await redis.set(`job:${job.id}`, job, { ex: 60 * 60 * 24 * 35 }) // 35 days
 }
 
 export async function getJob(id: string): Promise<Job | null> {
-  const db = await readDB()
-  return db[id] || null
+  return await redis.get<Job>(`job:${id}`)
 }
 
 export async function updateJob(id: string, updates: Partial<Job>): Promise<void> {
-  const db = await readDB()
-  if (!db[id]) throw new Error(`Job ${id} not found`)
-  db[id] = { ...db[id], ...updates, updatedAt: new Date().toISOString() }
-  await writeDB(db)
+  const job = await getJob(id)
+  if (!job) throw new Error(`Job ${id} not found`)
+  await redis.set(`job:${id}`, { ...job, ...updates, updatedAt: new Date().toISOString() }, { ex: 60 * 60 * 24 * 35 })
 }
