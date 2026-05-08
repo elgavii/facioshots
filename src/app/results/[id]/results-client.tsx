@@ -68,7 +68,12 @@ export default function ResultsClient({ id }: { id: string }) {
           <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
             <h1 style={{ fontFamily: 'Cormorant Garamond,Georgia,serif', fontSize: '2.5rem', fontWeight: 300, marginBottom: '1rem' }}>{info?.text}</h1>
             <p style={{ color: '#8A8278', marginBottom: '3rem', fontSize: '0.9rem' }}>
-              {job.status !== 'failed' ? "We'll email you when your headshots are ready." : `Email support@facioshots.com with order ID: ${id}`}
+              {job.status !== 'failed' ? "We'll email you when your headshots are ready." : (
+                <>
+                  {job.error && <span style={{ display: 'block', fontFamily: 'monospace', fontSize: '0.78rem', background: '#F5F0E8', padding: '0.75rem 1rem', marginBottom: '1rem', wordBreak: 'break-word' }}>{job.error}</span>}
+                  Email support@facioshots.com with order ID: {id}
+                </>
+              )}
             </p>
             {job.status !== 'failed' && (
               <div style={{ maxWidth: 400, margin: '0 auto' }}>
