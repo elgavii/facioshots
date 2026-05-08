@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useCallback } from 'react'
+import { upload } from '@vercel/blob/client'
 
 const STYLES = [
   { id: 'corporate', name: 'Corporate', desc: 'Crisp, formal, LinkedIn-ready' },
@@ -39,6 +40,7 @@ export default function Home() {
   const [selectedPlan, setSelectedPlan] = useState('pro')
   const [isDragging, setIsDragging] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [loadingMsg, setLoadingMsg] = useState('')
   const [error, setError] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -63,13 +65,14 @@ export default function Home() {
     setPreviews(p => p.filter((_, idx) => idx !== i))
   }
 
-  const uploadToCloudinary = async (file: File): Promise<string> => {
-    const form = new FormData()
-    form.append('file', file)
-    form.append('upload_preset', 'facioshots')
-    const res = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', { method: 'POST', body: form })
-    const data = await res.json()
-    return data.secure_url
+  const uploadToBlob = async (file: File, index: number): Promise<string> => {
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+    const pathname = `uploads/${Date.now()}-${index}-${safeName}`
+    const blob = await upload(pathname, file, {
+      access: 'public',
+      handleUploadUrl: '/api/upload-token',
+    })
+    return blob.url
   }
 
   const handleSubmit = async () => {
@@ -77,8 +80,29 @@ export default function Home() {
     if (uploadedFiles.length < 5) { setError('Please upload at least 5 photos for best results.'); return }
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { setError('Please enter a valid email address.'); return }
     setIsLoading(true)
+
+    let imageUrls: string[]
     try {
-      const imageUrls = await Promise.all(uploadedFiles.map(uploadToCloudinary))
+      let uploaded = 0
+      setLoadingMsg(`Uploading photos… (0/${uploadedFiles.length})`)
+      imageUrls = await Promise.all(
+        uploadedFiles.map(async (file, i) => {
+          const url = await uploadToBlob(file, i)
+          uploaded++
+          setLoadingMsg(`Uploading photos… (${uploaded}/${uploadedFiles.length})`)
+          return url
+        })
+      )
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unknown error'
+      setError(`Photo upload failed: ${msg}. Please check your connection and try again.`)
+      setIsLoading(false)
+      setLoadingMsg('')
+      return
+    }
+
+    setLoadingMsg('Creating your checkout…')
+    try {
       const res = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,9 +112,10 @@ export default function Home() {
       if (data.url) window.location.href = data.url
       else setError(data.error || 'Something went wrong. Please try again.')
     } catch {
-      setError('Something went wrong. Please try again.')
+      setError('Could not connect to checkout. Please try again.')
     } finally {
       setIsLoading(false)
+      setLoadingMsg('')
     }
   }
 
@@ -302,7 +327,7 @@ export default function Home() {
 
             <button onClick={handleSubmit} disabled={isLoading}
               style={{ width: '100%', background: isLoading ? '#8A8278' : '#1A1814', color: '#FAF8F4', border: 'none', padding: '1rem', fontSize: '0.82rem', letterSpacing: '0.12em', textTransform: 'uppercase', cursor: isLoading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-              {isLoading ? 'Uploading…' : `✦ Continue to Checkout — ${PLANS.find(p => p.id === selectedPlan)?.price}`}
+              {isLoading ? (loadingMsg || 'Loading…') : `✦ Continue to Checkout — ${PLANS.find(p => p.id === selectedPlan)?.price}`}
             </button>
             <p style={{ fontSize: '0.7rem', color: '#8A8278', textAlign: 'center', marginTop: '0.65rem', lineHeight: 1.6 }}>Secure payment via Stripe · 30-day money back guarantee</p>
           </div>
