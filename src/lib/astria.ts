@@ -17,14 +17,15 @@ export interface AstriaJob {
 // Step 1: Create a fine-tune (trains the model on uploaded photos)
 export async function createFineTune(
   imageUrls: string[],
-  name: string
+  name: string,
+  callbackUrl?: string
 ): Promise<{ tuneId: number }> {
   const formData = new FormData()
   formData.append('tune[title]', name)
-  formData.append('tune[name]', 'man') // or 'woman' — set dynamically based on user input
+  formData.append('tune[name]', 'man')
   formData.append('tune[base_tune_id]', '690204') // Realistic Vision v5.1
+  if (callbackUrl) formData.append('tune[callback]', callbackUrl)
 
-  // Attach each image URL
   imageUrls.forEach((url) => {
     formData.append('tune[image_urls][]', url)
   })
@@ -49,7 +50,8 @@ export async function generateHeadshots(
   tuneId: number,
   style: string,
   background: string,
-  count: number = 40
+  count: number = 40,
+  callbackUrl?: string
 ): Promise<{ promptId: number }> {
   const stylePrompts: Record<string, string> = {
     corporate:
@@ -75,24 +77,25 @@ export async function generateHeadshots(
   const negativePrompt =
     'cartoon, anime, illustration, painting, ugly, deformed, blurry, low quality, watermark, text'
 
+  const promptBody: Record<string, unknown> = {
+    text: prompt,
+    negative_prompt: negativePrompt,
+    num_images: count,
+    w: 512,
+    h: 768,
+    cfg_scale: 7,
+    steps: 30,
+    seed: -1,
+  }
+  if (callbackUrl) promptBody.callback = callbackUrl
+
   const res = await fetch(`${ASTRIA_BASE}/tunes/${tuneId}/prompts`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${ASTRIA_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      prompt: {
-        text: prompt,
-        negative_prompt: negativePrompt,
-        num_images: count,
-        w: 512,
-        h: 768,
-        cfg_scale: 7,
-        steps: 30,
-        seed: -1,
-      },
-    }),
+    body: JSON.stringify({ prompt: promptBody }),
   })
 
   if (!res.ok) {
