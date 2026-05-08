@@ -35,3 +35,15 @@ export async function updateJob(id: string, updates: Partial<Job>): Promise<void
   if (!job) throw new Error(`Job ${id} not found`)
   await redis.set(`job:${id}`, { ...job, ...updates, updatedAt: new Date().toISOString() }, { ex: 60 * 60 * 24 * 35 })
 }
+
+// Temporarily store image URLs before checkout (Stripe metadata is capped at 500 chars).
+// The webhook retrieves and deletes this record using the pendingId from session metadata.
+export async function savePendingImages(pendingId: string, urls: string[]): Promise<void> {
+  await redis.set(`pending:${pendingId}`, urls, { ex: 60 * 60 * 24 }) // 24h TTL
+}
+
+export async function popPendingImages(pendingId: string): Promise<string[] | null> {
+  const urls = await redis.get<string[]>(`pending:${pendingId}`)
+  if (urls) await redis.del(`pending:${pendingId}`)
+  return urls
+}

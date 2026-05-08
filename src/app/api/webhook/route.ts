@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
-import { createJob } from '@/lib/db'
+import { createJob, popPendingImages } from '@/lib/db'
 import { sendOrderConfirmation } from '@/lib/email'
 import Stripe from 'stripe'
 
@@ -20,6 +20,12 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session
     const meta = session.metadata!
 
+    const imageUrls = await popPendingImages(meta.pendingId)
+    if (!imageUrls) {
+      console.error('[webhook] No pending images found for pendingId:', meta.pendingId)
+      return NextResponse.json({ error: 'Images not found' }, { status: 500 })
+    }
+
     const job = {
       id: session.id,
       email: session.customer_email || meta.email,
@@ -27,7 +33,7 @@ export async function POST(req: NextRequest) {
       style: meta.style,
       background: meta.background,
       gender: meta.gender,
-      imageUrls: JSON.parse(meta.imageUrls || '[]'),
+      imageUrls,
       status: 'paid' as const,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

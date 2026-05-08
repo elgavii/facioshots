@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe, PLANS, PlanKey } from '@/lib/stripe'
+import { savePendingImages } from '@/lib/db'
+import { randomUUID } from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +18,11 @@ export async function POST(req: NextRequest) {
 
     const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
+    // Store image URLs in Redis — Stripe metadata values are capped at 500 chars
+    // and a JSON array of blob URLs easily exceeds that limit.
+    const pendingId = randomUUID()
+    await savePendingImages(pendingId, imageUrls)
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer_email: email,
@@ -28,7 +35,6 @@ export async function POST(req: NextRequest) {
             product_data: {
               name: `FACIOSHOTS ${selectedPlan.name} — ${selectedPlan.headshots} AI Headshots`,
               description: `Professional AI-generated headshots in ${style} style`,
-              images: ['https://facioshots.com/og-image.png'], // update with your actual image
             },
           },
           quantity: 1,
@@ -39,8 +45,8 @@ export async function POST(req: NextRequest) {
         style,
         background,
         gender,
-        imageUrls: JSON.stringify(imageUrls),
         email,
+        pendingId,
       },
       success_url: `${BASE_URL}/results/{CHECKOUT_SESSION_ID}`,
       cancel_url: `${BASE_URL}/?canceled=true`,
