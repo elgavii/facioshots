@@ -154,6 +154,7 @@ export default function Home() {
           <a href="#how" style={{ color: '#8A8278', textDecoration: 'none' }}>How it works</a>
           <a href="#create" style={{ color: '#8A8278', textDecoration: 'none' }}>Create</a>
           <a href="#pricing" style={{ color: '#8A8278', textDecoration: 'none' }}>Pricing</a>
+          <a href="/blog" style={{ color: '#8A8278', textDecoration: 'none' }}>Blog</a>
         </div>
         <button onClick={() => document.getElementById('create')?.scrollIntoView({ behavior: 'smooth' })}
           style={{ background: '#1A1814', color: '#FAF8F4', border: 'none', padding: '0.6rem 1.2rem', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', whiteSpace: 'nowrap' }}>
