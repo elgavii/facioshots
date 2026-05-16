@@ -3,6 +3,7 @@ export type Block =
   | { type: 'h2'; text: string }
   | { type: 'h3'; text: string }
   | { type: 'ul'; items: string[] }
+  | { type: 'table'; headers: string[]; rows: string[][] }
 
 export type Post = {
   slug: string
@@ -541,6 +542,518 @@ export const posts: Post[] = [
       {
         type: 'p',
         text: 'If you\'re still on the fence, consider this: you can try Facioshots for $14, see the quality for yourself, and make the call. If it doesn\'t meet your standards, you\'re out less than a coffee and a lunch. If it does — which, based on the evidence, it almost certainly will — you\'ve found a significantly better way to handle professional headshots for the foreseeable future.',
+      },
+    ],
+  },
+
+  // ─── NEW POSTS ───────────────────────────────────────────────────────────────
+
+  {
+    slug: 'ai-headshot-generator-free',
+    title: 'AI Headshot Generator: Free vs Paid — What You Actually Get in 2026',
+    date: '2026-05-10',
+    dateFormatted: 'May 10, 2026',
+    readTime: '6 min read',
+    category: 'Reviews',
+    excerpt:
+      "Not all AI headshot generators are created equal — especially when \"free\" is in the picture. Here's exactly what you get at each price point, and how to decide which is right for you.",
+    metaDescription:
+      'Comparing free vs paid AI headshot generators in 2026. Learn what free tools actually deliver, where paid tools like Facioshots pull ahead, and which option is right for your needs.',
+    content: [
+      {
+        type: 'p',
+        text: "Getting a professional headshot used to mean booking a photographer, finding the right outfit, and spending $200–500 for a handful of usable photos. In 2026, AI headshot generators have completely changed that equation — but not all of them are created equal. Here's exactly what you get with free versus paid AI headshot tools, and how to decide which is right for you.",
+      },
+      { type: 'h2', text: 'What Free AI Headshot Generators Actually Offer' },
+      {
+        type: 'p',
+        text: "Several tools offer free AI headshots, but there's almost always a catch. Most free tiers give you:",
+      },
+      {
+        type: 'ul',
+        items: [
+          '1–3 photos maximum — barely enough to find one you like',
+          'Low resolution — fine for a small profile picture, unusable for anything else',
+          'No style control — you get whatever the algorithm decides',
+          'Watermarks — rendering the photo unprofessional for actual use',
+          'Limited processing — slower queues or capped daily usage',
+        ],
+      },
+      {
+        type: 'p',
+        text: "Canva's free tier, for example, gives you one credit per day. That's one headshot attempt. If you don't like the result, you wait 24 hours. For anyone who needs a headshot urgently — for a job application, a speaking bio, or a new LinkedIn profile — that timeline doesn't work.",
+      },
+      { type: 'h2', text: 'What Paid AI Headshots Get You' },
+      {
+        type: 'p',
+        text: 'Paid tools typically start at $14–35 for a one-time fee and deliver:',
+      },
+      {
+        type: 'ul',
+        items: [
+          '20–40+ photos — enough variety to find several you love',
+          '2048px or higher resolution — print-ready quality',
+          'Style selection — corporate, creative, executive, casual',
+          'Background options — white, gray, navy, custom colors',
+          'Fast turnaround — most deliver within 20–30 minutes',
+        ],
+      },
+      {
+        type: 'p',
+        text: "The quality difference between free and paid is significant. Paid tools fine-tune a model specifically on your photos, which means the output actually looks like you. Free tools use a single pass through a generic model, which often produces a polished-looking stranger who shares your rough features.",
+      },
+      { type: 'h2', text: 'The Real Cost of "Free"' },
+      {
+        type: 'p',
+        text: "Here's the math most people don't do: if you spend 3 hours trying different free tools, tweaking prompts, and getting mediocre results — what's your time worth? At even $20/hour, you've spent $60 in time trying to save $20.",
+      },
+      {
+        type: 'p',
+        text: '[Facioshots](https://facioshots.com) delivers 40 professional headshots for $24, with results in about 20 minutes. That\'s less than the cost of a haircut, and you get photos that look like a photographer took them.',
+      },
+      { type: 'h2', text: 'When Free Makes Sense' },
+      { type: 'p', text: 'Free AI headshots are fine if:' },
+      {
+        type: 'ul',
+        items: [
+          'You just need a quick placeholder for a new account',
+          "You're testing whether AI headshots work for your look",
+          "You only need one photo and the resolution doesn't matter",
+        ],
+      },
+      { type: 'h2', text: 'When to Pay' },
+      { type: 'p', text: 'Pay for AI headshots if:' },
+      {
+        type: 'ul',
+        items: [
+          "You're actively job searching",
+          "You're building a personal brand or company bio",
+          'You need photos for press, speaking engagements, or marketing',
+          'You want variety across multiple styles and backgrounds',
+        ],
+      },
+      { type: 'h2', text: 'Our Recommendation' },
+      {
+        type: 'p',
+        text: "Try a free tool once to see if AI headshots work for you. If you like the concept but want professional-quality results, invest the $14–24 in a paid service. The output difference is substantial, and the price is a fraction of what a real photographer charges.",
+      },
+    ],
+  },
+
+  {
+    slug: 'linkedin-profile-photo-tips',
+    title: 'LinkedIn Profile Photo: The Complete Guide to Getting It Right in 2026',
+    date: '2026-05-11',
+    dateFormatted: 'May 11, 2026',
+    readTime: '7 min read',
+    category: 'Career Tips',
+    excerpt:
+      "Profiles with professional photos get 21x more views. Yet most people are using a blurry selfie or nothing at all. Here's everything you need to know to get your LinkedIn photo right.",
+    metaDescription:
+      'The complete guide to LinkedIn profile photos in 2026: what makes a great photo, common mistakes to avoid, technical specs, and how to get a professional headshot without a photographer.',
+    content: [
+      {
+        type: 'p',
+        text: "Your LinkedIn profile photo is the most important image in your professional life. Studies show profiles with professional photos get 21x more views and 9x more connection requests than those without. Yet most people are using a blurry selfie, a cropped group photo, or nothing at all.",
+      },
+      {
+        type: 'p',
+        text: "Here's everything you need to know about getting your LinkedIn photo right in 2026.",
+      },
+      { type: 'h2', text: 'What Makes a Great LinkedIn Profile Photo' },
+      { type: 'h3', text: '1. Your face fills the frame' },
+      {
+        type: 'p',
+        text: "LinkedIn thumbnails are small — about 400×400 pixels. If your face only takes up 20% of the frame, nobody can see your expression. Crop tight: your face and shoulders should fill at least 60% of the image.",
+      },
+      { type: 'h3', text: '2. Clean, professional background' },
+      {
+        type: 'p',
+        text: "White, gray, navy, and soft blur backgrounds all work well. Avoid busy backgrounds, bright colors, or anything distracting. The goal is to keep attention on your face.",
+      },
+      { type: 'h3', text: '3. Good lighting' },
+      {
+        type: 'p',
+        text: "Soft, even lighting that illuminates your face without harsh shadows. Natural window light is ideal. Overhead fluorescent lighting makes everyone look terrible — avoid it.",
+      },
+      { type: 'h3', text: '4. Professional attire' },
+      {
+        type: 'p',
+        text: "Dress for the job you want. A crisp button-down or blazer signals professionalism. You don't need a full suit — business casual reads well on LinkedIn for most industries.",
+      },
+      { type: 'h3', text: '5. A natural, confident expression' },
+      {
+        type: 'p',
+        text: 'Slight smile, relaxed jaw, direct eye contact with the camera. Avoid trying too hard — overly forced smiles look uncomfortable. Think "friendly and approachable" rather than "ecstatic."',
+      },
+      { type: 'h2', text: 'Common LinkedIn Photo Mistakes' },
+      {
+        type: 'ul',
+        items: [
+          'Using a selfie — selfie cameras produce lower quality images and selfie angles are obvious',
+          'Wearing sunglasses — hides your eyes, which is where trust is built',
+          'Group photos — even cropped, they look unprofessional',
+          "Outdated photos — if your photo is 10 years old, people are confused when they meet you",
+          'No photo — gets significantly fewer profile views',
+        ],
+      },
+      { type: 'h2', text: 'How to Get a Professional LinkedIn Photo in 2026' },
+      { type: 'p', text: 'You have three options:' },
+      { type: 'h3', text: 'Option 1: Hire a photographer' },
+      {
+        type: 'p',
+        text: 'Cost: $150–500. Quality: excellent. Convenience: low — requires scheduling, travel, outfits.',
+      },
+      { type: 'h3', text: 'Option 2: DIY with a smartphone' },
+      {
+        type: 'p',
+        text: 'Cost: free. Quality: variable. Requires good lighting, a friend to take the shot, and some editing. Results range from surprisingly good to obviously amateur.',
+      },
+      { type: 'h3', text: 'Option 3: AI headshot generator' },
+      {
+        type: 'p',
+        text: 'Cost: $14–35. Quality: professional. Convenience: very high — upload selfies, get 40 professional photos in 20 minutes.',
+      },
+      {
+        type: 'p',
+        text: "AI headshot generators like [Facioshots](https://facioshots.com) have gotten good enough that the results are genuinely indistinguishable from professional photography at the resolution LinkedIn displays them. For most professionals, this is now the obvious choice — fraction of the cost, a fraction of the time.",
+      },
+      { type: 'h2', text: 'LinkedIn Photo Specs' },
+      {
+        type: 'ul',
+        items: [
+          'Minimum size: 400×400 pixels',
+          'Maximum size: 7680×4320 pixels',
+          'File format: JPG or PNG',
+          'File size: under 8MB',
+          'Aspect ratio: square (1:1)',
+        ],
+      },
+      { type: 'h2', text: 'How Often Should You Update Your LinkedIn Photo?' },
+      { type: 'p', text: 'Update your photo when:' },
+      {
+        type: 'ul',
+        items: [
+          'Your appearance has significantly changed',
+          'Your current photo is more than 3–4 years old',
+          "You've changed industries and need a different look",
+          "You're starting an active job search",
+        ],
+      },
+      { type: 'h2', text: 'The ROI of a Good LinkedIn Photo' },
+      {
+        type: 'p',
+        text: "A professional LinkedIn photo isn't vanity — it's ROI. If a better photo gets you even one more recruiter conversation that leads to a job, the $24 you spent on AI headshots paid off thousands of times over.",
+      },
+    ],
+  },
+
+  {
+    slug: 'professional-headshot-cost',
+    title: 'How Much Does a Professional Headshot Cost in 2026? (All Options Compared)',
+    date: '2026-05-12',
+    dateFormatted: 'May 12, 2026',
+    readTime: '6 min read',
+    category: 'Guides',
+    excerpt:
+      "Professional headshots range from completely free to $500+. Here's a clear breakdown of every option, what you actually get, and which makes sense for your situation.",
+    metaDescription:
+      'How much does a professional headshot cost in 2026? Compare all options: traditional photographers ($150–500), mall studios, DIY, and AI headshot generators ($14–50). Find the best value.',
+    content: [
+      {
+        type: 'p',
+        text: "If you're looking for a professional headshot, the price range is enormous — from completely free to $500+. Here's a breakdown of every option, what you actually get, and which is worth it.",
+      },
+      { type: 'h2', text: 'Traditional Photographer: $150–500' },
+      {
+        type: 'p',
+        text: "The gold standard for headshots is still a professional photographer. Here's what that typically looks like:",
+      },
+      {
+        type: 'ul',
+        items: [
+          '**Budget photographers ($150–200)**: Often newer photographers building their portfolio. Quality is inconsistent.',
+          '**Mid-range photographers ($200–350)**: Solid quality, professional equipment, usually 1–2 outfit changes, 10–20 edited selects.',
+          '**Premium photographers ($350–500+)**: Top-tier quality, experienced with professional/executive portraits, full retouching, often same-day turnaround.',
+        ],
+      },
+      {
+        type: 'p',
+        text: "**What you don't get**: More than 10–20 final photos. Most photographers include 5–10 edited images in the base price.",
+      },
+      {
+        type: 'p',
+        text: "**The hidden costs**: Travel to the studio, outfit(s), makeup (often recommended), retouching fees if not included, and half a day of your time.",
+      },
+      { type: 'h2', text: 'Department Store / Mall Studios: $50–150' },
+      {
+        type: 'p',
+        text: 'Chains like JCPenney portraits or similar. Fast, affordable, but results are generic and lighting is often unflattering. The "professional" look is dated.',
+      },
+      { type: 'h2', text: 'DIY Smartphone Photography: Free' },
+      {
+        type: 'p',
+        text: "With good lighting and a friend, you can get a decent headshot on a modern iPhone or Android. The ceiling is lower than professional photography, but it's free.",
+      },
+      {
+        type: 'p',
+        text: '**What you need**: Good natural light (near a window), a clean background, a friend to take the photo, and some editing app.',
+      },
+      {
+        type: 'p',
+        text: "**The downside**: Most people's DIY attempts look exactly like what they are — someone's friend took this in their apartment.",
+      },
+      { type: 'h2', text: 'AI Headshot Generators: $14–50' },
+      {
+        type: 'p',
+        text: "The newest category, and the one that's disrupted the market. AI tools like [Facioshots](https://facioshots.com) train a model on your photos and generate professional headshots in a variety of styles.",
+      },
+      { type: 'p', text: 'What you get:' },
+      {
+        type: 'ul',
+        items: [
+          '20–40+ photos (vs 5–10 from a photographer)',
+          'Multiple styles (corporate, creative, executive, casual)',
+          'Multiple backgrounds',
+          '2048px resolution',
+          'Delivered in 20–30 minutes',
+        ],
+      },
+      { type: 'p', text: 'Starting prices:' },
+      {
+        type: 'ul',
+        items: [
+          'Facioshots Starter: $14 for 20 headshots',
+          'Facioshots Pro: $24 for 40 headshots',
+          'Most competitors: $29–50',
+        ],
+      },
+      { type: 'h2', text: 'Which Is Worth It?' },
+      {
+        type: 'table',
+        headers: ['Option', 'Cost', 'Photos', 'Time', 'Quality'],
+        rows: [
+          ['Premium photographer', '$350–500', '10–20', 'Half day', 'Excellent'],
+          ['Budget photographer', '$150–200', '5–10', 'Half day', 'Good'],
+          ['AI headshot generator', '$14–50', '20–100', '20 min', 'Very good'],
+          ['DIY smartphone', 'Free', 'Unlimited', '1–2 hours', 'Variable'],
+        ],
+      },
+      {
+        type: 'p',
+        text: "**For most professionals**: An AI headshot generator delivers the best combination of quality, quantity, speed, and cost. At $24 for 40 photos, you get more variety than most photographer sessions and professional-quality results at the resolution LinkedIn and most professional platforms display them.",
+      },
+      {
+        type: 'p',
+        text: "**When to hire a photographer**: If you need a headshot for a major publication, a book cover, an executive annual report, or another high-stakes use case where the photo will be displayed very large and scrutinized closely.",
+      },
+      {
+        type: 'p',
+        text: "**Our recommendation**: Start with [Facioshots](https://facioshots.com) at $14–24. If you're not satisfied (there's a 30-day money-back guarantee), you can always book a photographer. Most people are more than satisfied with the AI results.",
+      },
+    ],
+  },
+
+  {
+    slug: 'resume-photo-guide',
+    title: 'Should You Put a Photo on Your Resume? (And If So, How to Get a Great One)',
+    date: '2026-05-13',
+    dateFormatted: 'May 13, 2026',
+    readTime: '5 min read',
+    category: 'Career Tips',
+    excerpt:
+      "The resume photo debate depends heavily on where you're applying. Here's the definitive answer by country and industry — plus how to get a great photo if you need one.",
+    metaDescription:
+      "Should you put a photo on your resume? The answer depends on where you're applying. This guide covers resume photo norms by country, what makes a good professional photo, and how to get one affordably.",
+    content: [
+      {
+        type: 'p',
+        text: "The resume photo question is one of the most debated topics in job searching. In some countries, it's expected. In others, it's actively discouraged. Here's the definitive guide to when to include a photo, when to leave it out, and how to get a great one if you do.",
+      },
+      { type: 'h2', text: 'Should You Include a Photo on Your Resume?' },
+      { type: 'h3', text: 'In the United States and Canada' },
+      {
+        type: 'p',
+        text: "Generally no. HR professionals in North America are trained to avoid any information that could reveal protected characteristics (race, age, gender, etc.) before the interview stage. A photo can make hiring managers unconsciously biased, and some companies have policies against considering resumes with photos. Leave it out unless specifically requested.",
+      },
+      { type: 'h3', text: 'In Europe' },
+      {
+        type: 'p',
+        text: "Depends on the country. In Germany, Austria, Switzerland, and some Eastern European countries, a professional photo is standard and expected. In the UK and Ireland, follow the US approach.",
+      },
+      { type: 'h3', text: 'In Asia, Middle East, and Latin America' },
+      {
+        type: 'p',
+        text: 'Photos are commonly expected. Check the norms for your specific country and industry.',
+      },
+      { type: 'h3', text: 'In creative fields' },
+      {
+        type: 'p',
+        text: "Sometimes a headshot is appropriate, especially if you're in acting, modeling, or a visual industry where your appearance is relevant to the role.",
+      },
+      { type: 'h2', text: 'When a Resume Photo Helps' },
+      {
+        type: 'p',
+        text: "Even if you're applying in a no-photo culture, there are situations where a photo is appropriate:",
+      },
+      {
+        type: 'ul',
+        items: [
+          'Online portfolios and personal websites — absolutely include a professional headshot',
+          'LinkedIn — always have a professional photo',
+          'Speaking bios — conferences and events almost always want a headshot',
+          'Company team pages — required when you join a company',
+          'Executive bios — press releases, investor decks, annual reports',
+        ],
+      },
+      { type: 'h2', text: 'What Makes a Good Resume/Professional Photo' },
+      {
+        type: 'p',
+        text: "If you're including a photo, it needs to be excellent:",
+      },
+      {
+        type: 'ul',
+        items: [
+          '**Professional attire** — appropriate for your industry',
+          '**Clean background** — white, gray, or soft blur',
+          '**Good lighting** — no harsh shadows',
+          '**High resolution** — at least 400×400px, ideally 1000px+',
+          '**Recent** — taken in the last 1–2 years',
+          '**Neutral expression** — friendly but professional',
+        ],
+      },
+      { type: 'h2', text: 'How to Get a Professional Photo Without a Photographer' },
+      {
+        type: 'p',
+        text: "AI headshot generators have made professional-quality photos accessible to everyone. [Facioshots](https://facioshots.com) lets you upload 5–20 selfies and generates 40 professional headshots in about 20 minutes, starting at $14.",
+      },
+      { type: 'p', text: 'The results work perfectly for:' },
+      {
+        type: 'ul',
+        items: [
+          'LinkedIn profile photos',
+          'Personal website headshots',
+          'Speaking bios',
+          'Company team pages',
+          'International resumes where photos are expected',
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: 'how-ai-headshots-work',
+    title: 'How AI Headshot Generators Actually Work (The Technology Explained Simply)',
+    date: '2026-05-14',
+    dateFormatted: 'May 14, 2026',
+    readTime: '8 min read',
+    category: 'Technology',
+    excerpt:
+      "AI headshot tools have gone from novelty to mainstream. But how do they actually work? Here's a plain-English explanation of the technology behind tools like Facioshots.",
+    metaDescription:
+      'How do AI headshot generators work? A plain-English explanation of diffusion models, fine-tuning, and personalized AI training — the technology behind tools like Facioshots.',
+    content: [
+      {
+        type: 'p',
+        text: "AI headshot generators have gone from novelty to mainstream in just a few years. But how do they actually work? Here's a plain-English explanation of the technology behind tools like [Facioshots](https://facioshots.com) — no computer science degree required.",
+      },
+      { type: 'h2', text: 'The Basic Concept: Teaching AI What You Look Like' },
+      {
+        type: 'p',
+        text: "When you upload 5–20 selfies to an AI headshot generator, you're not just giving the AI reference photos. You're training a small, personalized AI model specifically on your face.",
+      },
+      {
+        type: 'p',
+        text: "This is called **fine-tuning** — taking an existing AI model that already knows how to generate photorealistic portraits, and teaching it specifically what you look like. After training, the model can generate new photos of you in any setting, style, or lighting — while preserving your actual features.",
+      },
+      { type: 'h2', text: 'Step 1: The Diffusion Model' },
+      {
+        type: 'p',
+        text: "Modern AI image generators use a technology called **diffusion models**. Here's the simple version:",
+      },
+      {
+        type: 'p',
+        text: "The AI has been trained on millions of real photographs. During training, it learned to understand what makes a photo look realistic — lighting, shadows, skin texture, how hair behaves, how clothing wrinkles.",
+      },
+      {
+        type: 'p',
+        text: 'When generating a new image, the AI starts with random noise (like TV static) and gradually removes the noise, step by step, until a coherent image emerges. Each step is guided by a text description (the "prompt") — things like "professional corporate headshot, soft studio lighting, white background."',
+      },
+      { type: 'h2', text: 'Step 2: Fine-Tuning on Your Photos' },
+      {
+        type: 'p',
+        text: "The generic diffusion model knows how to generate photorealistic portraits of people in general. But it doesn't know what you look like.",
+      },
+      {
+        type: 'p',
+        text: 'Fine-tuning solves this. By training the model on your specific photos, the AI learns your facial structure, skin tone, eye shape, hair color, and other distinguishing features. After fine-tuning, when the model generates a "professional headshot," it generates a professional headshot of you — not a generic person.',
+      },
+      {
+        type: 'p',
+        text: "This is why AI headshot generators need multiple photos (typically 5–20). More photos = more data = better understanding of your unique features = more realistic results.",
+      },
+      { type: 'h2', text: 'Step 3: Generating the Headshots' },
+      {
+        type: 'p',
+        text: "Once the model is fine-tuned (usually takes 10–20 minutes), it generates your headshots by running your personalized model with different prompts:",
+      },
+      {
+        type: 'ul',
+        items: [
+          '"Corporate headshot, navy background, business attire, soft directional lighting"',
+          '"Creative professional headshot, sage green background, smart casual, warm lighting"',
+          '"Executive portrait, black background, formal attire, dramatic studio lighting"',
+        ],
+      },
+      {
+        type: 'p',
+        text: "Each prompt generates a different variation — different style, background, lighting, and expression — while keeping your face consistent across all of them.",
+      },
+      { type: 'h2', text: 'Step 4: Quality and Realism' },
+      {
+        type: 'p',
+        text: "The best AI headshot tools produce results that are genuinely indistinguishable from professional photography at the resolution used on LinkedIn, resumes, and most professional platforms.",
+      },
+      { type: 'p', text: 'The key metrics:' },
+      {
+        type: 'ul',
+        items: [
+          '**Likeness fidelity** — does it actually look like you?',
+          '**Photorealism** — does it look like a real photo, not AI art?',
+          '**Consistency** — do multiple outputs all look like the same person?',
+        ],
+      },
+      {
+        type: 'p',
+        text: "Top tools like [Facioshots](https://facioshots.com), Aragon AI, and HeadshotPro score high on all three.",
+      },
+      { type: 'h2', text: 'Why Your Input Photos Matter' },
+      {
+        type: 'p',
+        text: "The AI can only work with what you give it. Better input photos = better output. That means:",
+      },
+      {
+        type: 'ul',
+        items: [
+          '**Clear, sharp photos** — blurry selfies produce blurry results',
+          '**Good lighting** — well-lit input photos help the AI understand your true skin tone and features',
+          '**Variety of angles** — front-facing, slight left turn, slight right turn all help',
+          '**No accessories blocking your face** — sunglasses and hats hide the features the AI needs',
+        ],
+      },
+      { type: 'h2', text: 'Is It Privacy-Safe?' },
+      {
+        type: 'p',
+        text: "Reputable AI headshot services like [Facioshots](https://facioshots.com) delete your uploaded photos within 35 days and never share or sell your images. The fine-tuned model is also deleted after your headshots are delivered.",
+      },
+      {
+        type: 'p',
+        text: 'Always check the privacy policy before uploading photos to any AI service.',
+      },
+      { type: 'h2', text: 'The Bottom Line' },
+      {
+        type: 'p',
+        text: "AI headshot generation is genuinely impressive technology that delivers professional-quality results at a fraction of the cost of traditional photography. Understanding how it works helps you use it more effectively — upload high-quality, well-lit photos from multiple angles, and you'll get the best possible results.",
       },
     ],
   },
