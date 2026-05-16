@@ -1,7 +1,35 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import React from 'react'
 import { posts, getPost, type Block } from '@/content/blog/posts'
+
+// Renders inline **bold** and [link](url) markdown within a plain string
+function renderText(text: string): React.ReactNode {
+  const tokens = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g)
+  return (
+    <>
+      {tokens.map((token, i) => {
+        if (token.startsWith('**') && token.endsWith('**')) {
+          return (
+            <strong key={i} style={{ fontWeight: 500, color: '#1A1814' }}>
+              {token.slice(2, -2)}
+            </strong>
+          )
+        }
+        const linkMatch = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+        if (linkMatch) {
+          return (
+            <a key={i} href={linkMatch[2]} style={{ color: '#C9A84C', textDecoration: 'none', borderBottom: '1px solid rgba(201,168,76,0.4)' }}>
+              {linkMatch[1]}
+            </a>
+          )
+        }
+        return token
+      })}
+    </>
+  )
+}
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -45,7 +73,7 @@ function renderBlock(block: Block, i: number) {
             borderBottom: '1px solid rgba(201,168,76,0.25)',
           }}
         >
-          {block.text}
+          {renderText(block.text)}
         </h2>
       )
     case 'h3':
@@ -62,7 +90,7 @@ function renderBlock(block: Block, i: number) {
             color: '#1A1814',
           }}
         >
-          {block.text}
+          {renderText(block.text)}
         </h3>
       )
     case 'p':
@@ -77,7 +105,7 @@ function renderBlock(block: Block, i: number) {
             fontWeight: 300,
           }}
         >
-          {block.text}
+          {renderText(block.text)}
         </p>
       )
     case 'ul':
@@ -102,10 +130,58 @@ function renderBlock(block: Block, i: number) {
                 paddingLeft: '0.25rem',
               }}
             >
-              {item}
+              {renderText(item)}
             </li>
           ))}
         </ul>
+      )
+    case 'table':
+      return (
+        <div key={i} style={{ overflowX: 'auto', margin: '1.25rem 0 1.75rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+            <thead>
+              <tr>
+                {block.headers.map((h, j) => (
+                  <th
+                    key={j}
+                    style={{
+                      background: '#1A1814',
+                      color: '#FAF8F4',
+                      padding: '0.625rem 1rem',
+                      textAlign: 'left',
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontWeight: 500,
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, j) => (
+                <tr key={j} style={{ background: j % 2 === 0 ? '#F5F0E8' : '#FAF8F4' }}>
+                  {row.map((cell, k) => (
+                    <td
+                      key={k}
+                      style={{
+                        padding: '0.625rem 1rem',
+                        borderBottom: '1px solid rgba(26,24,20,0.08)',
+                        color: k === 0 ? '#1A1814' : '#2C2A26',
+                        fontWeight: k === 0 ? 400 : 300,
+                      }}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )
     default:
       return null
